@@ -4,12 +4,13 @@
 var express = require('express');
 var app = express();
 const axios = require('axios');
+const url = process.env.NODE_ENV === 'docker' ? 'http://dockerhost:3002/' : 'http://localhost:3002/';
 const name = 'Hydralisk Service';
 const port = process.env.PORT || 3001;
 
 app.get('/', function (req, res) {
   console.log(`${name} Route Hit!`);
-  axios.get('http://dockerhost:3002').then((result) => {
+  axios.get(url).then((result) => {
     console.log(result.data);
     res.send(`Hello World! - ${name}`);
   }, err => {

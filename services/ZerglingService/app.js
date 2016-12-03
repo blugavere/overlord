@@ -17,6 +17,7 @@ app.get('/', (req, res) => {
         res.send(`Hello World! - ${name}`);
     }, err => {
         console.log('ajax error', err);
+        res.send('Hydralisk Service Error!');
     });
 });
 

@@ -6,8 +6,10 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "npm-run-all --parallel dev:docker dev:mutalisk",
-    "dev:mutalisk": "node services/MutaliskService/app",
-    "dev:docker": "bash ./overlord/run.sh"
+    "dev:mutalisk": "NODE_ENV=docker node services/MutaliskService/app",
+    "dev:docker": "bash ./overlord/run.sh",
+    "dev:zergling": "node services/ZerglingService/app",
+    "dev:hydralisk": "node services/HydraliskService/app"
   },
   "repository": {
     "type": "git",

@@ -13,16 +13,15 @@ Navigate to http://localhost:8080
 
 ## Installation
 
+Go to every folder in services and run npm install.
+
 ## Getting Up And Running
 
 ```bash
 # Build all service images
 bash reimage
 
-# Starts all of the microservices
-docker-compose -f ./overlord/docker-compose.dev.yml up
-
-# or...
+# Start all of the microservices
 npm run dev
 
 
