@@ -1,0 +1,8 @@
+version: '2'
+services:
+    demo:
+        image: demo
+        ports:
+            - "8080:3000"
+    other:
+        image: other-dev
