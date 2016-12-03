@@ -8,6 +8,9 @@ The most complicated hello world ever.
 
 # Getting Started
 
+npm run dev
+Navigate to http://localhost:8080
+
 ## Installation
 
 ## Getting Up And Running
@@ -18,6 +21,11 @@ bash reimage
 
 # Starts all of the microservices
 docker-compose -f ./overlord/docker-compose.dev.yml up
+
+# or...
+npm run dev
+
+
 ```
 
 ## Debugging

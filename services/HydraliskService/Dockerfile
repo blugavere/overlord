@@ -26,5 +26,4 @@ COPY package.json .npmrc /tmp/
 
 ENV NODE_ENV=docker
 
-
-CMD ["node", "app.js"]
+CMD ["nodemon", "app.js"]

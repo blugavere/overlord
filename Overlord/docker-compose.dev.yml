@@ -1,8 +1,20 @@
 version: '2'
 services:
     zergling:
-        image: zergling
+        build: ../services/ZerglingService
+        volumes: 
+            - ../services/ZerglingService:/app
         ports:
             - "8080:3000"
+        links: 
+            - hydralisk
+        environment:
+            - NODE_ENV=docker
+        command: ./node_modules/.bin/nodemon -L app.js
     hydralisk:
-        image: hydralisk-dev
+        build: ../services/HydraliskService
+        volumes: 
+            - ../services/HydraliskService:/app
+        environment:
+            - NODE_ENV=docker
+        command: ./node_modules/.bin/nodemon -L app.js
