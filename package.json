@@ -5,7 +5,9 @@
   "main": ".eslintrc.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "docker-compose -f overlord/docker-compose.dev.yml up"
+    "dev": "npm-run-all --parallel dev:docker dev:mutalisk",
+    "dev:mutalisk": "node services/MutaliskService/app",
+    "dev:docker": "bash ./overlord/run.sh"
   },
   "repository": {
     "type": "git",
@@ -17,5 +19,8 @@
   "bugs": {
     "url": "https://github.com/blugavere/overlord/issues"
   },
-  "homepage": "https://github.com/blugavere/overlord#readme"
+  "homepage": "https://github.com/blugavere/overlord#readme",
+  "devDependencies": {
+    "npm-run-all": "^3.1.2"
+  }
 }

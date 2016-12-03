@@ -3,14 +3,21 @@
 
 var express = require('express');
 var app = express();
-
+const axios = require('axios');
 const name = 'Hydralisk Service';
+const port = process.env.PORT || 3001;
 
 app.get('/', function (req, res) {
   console.log(`${name} Route Hit!`);
-  res.send(`Hello World! - ${name}`);
+  axios.get('http://dockerhost:3002').then((result) => {
+    console.log(result.data);
+    res.send(`Hello World! - ${name}`);
+  }, err => {
+    console.log(err);
+    res.send('Unable to access External API');
+  });
 });
 
-app.listen(3001, function () {
-  console.log(`${name} listening on port 3001!`);
+app.listen(port, function () {
+  console.log(`${name} listening on port ${port}!`);
 });

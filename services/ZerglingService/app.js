@@ -5,6 +5,7 @@ const app = express();
 const axios = require('axios');
 const url = process.env.NODE_ENV === 'docker' ? 'http://hydralisk:3001/' : 'http://localhost:3001/';
 const name = 'Zergling Service';
+const port = process.env.PORT || 3000;
 
 console.log(`Bootstrapping ${process.env.NODE_ENV}:`);
 console.log('URL: ', url);
@@ -19,6 +20,6 @@ app.get('/', (req, res) => {
     });
 });
 
-app.listen(3000, function () {
-    console.log(`${name} listening on port 3000!`);
+app.listen(port, function () {
+    console.log(`${name} listening on port ${port}!`);
 });

@@ -18,3 +18,5 @@ services:
         environment:
             - NODE_ENV=docker
         command: ./node_modules/.bin/nodemon -L app.js
+        extra_hosts:
+            - "dockerhost:$DOCKERHOST"
