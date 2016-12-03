@@ -17,7 +17,7 @@ The most complicated hello world ever.
 bash reimage
 
 # Starts all of the microservices
-docker-compose -f ./Overlord/docker-compose.dev.yml up
+docker-compose -f ./overlord/docker-compose.dev.yml up
 ```
 
 ## Debugging

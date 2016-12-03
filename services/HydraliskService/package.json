@@ -1,11 +1,11 @@
 {
-  "name": "dockerdemo",
+  "name": "@overlord/hydralisk-service",
   "version": "1.0.0",
   "description": "",
   "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dockerize": "docker build -t other ."
+    "build": "docker build -t hydralisk ."
   },
   "keywords": [],
   "author": "",
