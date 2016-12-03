@@ -1,8 +1,8 @@
 version: '2'
 services:
-    demo:
-        image: demo
+    zergling:
+        image: zergling
         ports:
             - "8080:3000"
-    other:
-        image: other
+    hydralisk:
+        image: hydralisk
