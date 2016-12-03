@@ -8,9 +8,6 @@ The most complicated hello world ever.
 
 # Getting Started
 
-npm run dev
-Navigate to http://localhost:8080
-
 ## Installation
 
 Go to every folder in services and run npm install.
@@ -24,8 +21,9 @@ bash reimage
 # Start all of the microservices
 npm run dev
 
-
 ```
+
+Navigate to [http://localhost:8080](http://localhost:8080)
 
 ## Debugging
 
