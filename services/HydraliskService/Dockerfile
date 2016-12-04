@@ -14,16 +14,17 @@ ONBUILD ENV APP_VERSION ${APP_VERSION}
 # Otherwise it will use the node_modules folder from its internal cache.
 
 COPY package.json .npmrc /tmp/
- RUN cd /tmp && npm install --prod
- RUN cp -a /tmp/node_modules /app
+RUN cd /tmp && npm install --prod
+RUN cp -a /tmp/node_modules /app
 
 # Cleanup NPM cache to reduce image size
- RUN npm cache clear
+RUN npm cache clear
 
 # Copy app source after installing the NPM modules to not force a recaching
 # of the NPM modules
- COPY . /app
+COPY . /app
 
 ENV NODE_ENV=docker
+ENV PORT=$PORT
 
 CMD ["node", "app.js"]
