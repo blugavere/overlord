@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/blugavere/overlord.svg?branch=master)](https://travis-ci.org/blugavere/overlord)
+
 # overlord
 The most complicated hello world ever.
 
