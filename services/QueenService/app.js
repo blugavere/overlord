@@ -12,12 +12,12 @@ const notificationService = new NotificationService();
 
 let channel, queue;
 
-let counter = 0;
+// let counter = 0;
 const broodlingFactory = {
   create(data, cb) {
-    counter++;
+    // counter++;
     cb(null, {
-      _id: counter,
+      _id: data.requestNum,
       name: data.name,
       type: 'broodling'
     });
@@ -43,11 +43,11 @@ const consume = () => {
   channel.assertQueue(rpcQueue, {durable: true});
   channel.consume(rpcQueue, msg => {
     const content = JSON.parse(msg.content.toString());
+    console.log(`Request #${content.requestNum} receieved to create a broodling named: ${content.name}`);
     broodlingFactory.create(content, (err, broodling) => { 
       if(err) {
         return console.error(err);
       }
-      console.log('Props: ', msg.properties);
       channel.sendToQueue(msg.properties.replyTo, new Buffer(JSON.stringify(broodling)), {
         correlationId: msg.properties.correlationId
       });

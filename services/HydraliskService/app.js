@@ -4,6 +4,7 @@
 const express = require('express');
 const app = express();
 const axios = require('axios');
+const assert = require('assert');
 const NotificationService = require('../../src/infrastructure/NotificationService');
 
 const url = process.env.NODE_ENV === 'docker' ? 'http://dockerhost:3002/' : 'http://localhost:3002/';
@@ -35,19 +36,28 @@ app.post('/spawn/:id', (req, res) => {
   });
 });
 
+let counter = 0;
 app.post('/create/:id', (req, res) => {
+  counter++;
   console.log(`${name} Create Route Hit!`);
   const id = req.params.id;
-  notificationService.request('broodling_rpc', { name: `#1 - ${id}` }, (err, doc) => {
+  
+  // move to "queen", which will actually RPC call the queen service via amqp.
+  // request a broodling from the queen
+  notificationService.request('broodling_rpc', { name: id, requestNum: counter }, (err, doc) => {
       if(err) {
         console.log(err);
         res.status(400);
         return res.send({ message: 'failed to create broodlings' });
       }
+      console.log('Broodling Created');
       res.send(doc);
   });
 });
 
-app.listen(port, function () {
-  console.log(`${name} listening on port ${port}!`);
+notificationService.init(err => {
+  assert(!err);
+  app.listen(port, function () {
+    console.log(`${name} listening on port ${port}!`);
+  });
 });
