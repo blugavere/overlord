@@ -43,6 +43,7 @@ class RabbitService {
             console.log('Reply Receieved: ', JSON.stringify(content));
             if (handler) {
               handler(null, content);
+              ch.ack(msg);
             }
           }, {
             noAck: false
