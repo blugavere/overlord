@@ -9,7 +9,9 @@
     "dev:mutalisk": "NODE_ENV=docker node services/MutaliskService/app",
     "dev:docker": "bash ./overlord/run.sh",
     "dev:zergling": "node services/ZerglingService/app",
-    "dev:hydralisk": "node services/HydraliskService/app"
+    "dev:hydralisk": "nodemon services/HydraliskService/app",
+    "dev:queen": "nodemon services/QueenService/app",
+    "dev:background": "nodemon services/BackgroundService/app"
   },
   "repository": {
     "type": "git",
@@ -24,5 +26,9 @@
   "homepage": "https://github.com/blugavere/overlord#readme",
   "devDependencies": {
     "npm-run-all": "^3.1.2"
+  },
+  "dependencies": {
+    "amqplib": "^0.5.1",
+    "uuid": "^3.0.1"
   }
 }
