@@ -33,9 +33,20 @@ app.post('/spawn/:id', (req, res) => {
       }
       res.send({ message: 'Request to spawn received' });
   });
-
 });
 
+app.post('/create/:id', (req, res) => {
+  console.log(`${name} Create Route Hit!`);
+  const id = req.params.id;
+  notificationService.request('broodling_rpc', { name: `#1 - ${id}` }, (err, doc) => {
+      if(err) {
+        console.log(err);
+        res.status(400);
+        return res.send({ message: 'failed to create broodlings' });
+      }
+      res.send(doc);
+  });
+});
 
 app.listen(port, function () {
   console.log(`${name} listening on port ${port}!`);

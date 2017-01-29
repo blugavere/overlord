@@ -1,41 +1,73 @@
 'use strict';
 
-const amqp = require('amqplib');
+const amqp = require('amqplib/callback_api');
 const uuid = require('node-uuid');
 
-class NotificationService {
+class RabbitService {
   static get inject() {
     return [];
   }
   constructor() {
     const self = this;
+
     self.idToCallbackMap = {};
 
-    amqp.connect('amqp://localhost')
-      .then(conn => {
-        self.connection = conn;
-        return conn.createChannel();
-      })
-      .then(ch => {
+    amqp.connect('amqp://localhost', (err, conn) => {
+      if(err) return console.log(err);
+      self.connection = conn;
+      conn.createChannel((err, ch) => {
+        if(err) return console.log(err);
         self.channel = ch;
-      })
-      .catch(err => console.log(err));
+
+        ch.assertQueue('', { exclusive: true }, (err, q) => {
+          self.replyQueue = q.queue;
+
+          ch.consume(q.queue, msg => {
+            const correlationId = msg.properties.correlationId;
+            const handler = self.idToCallbackMap[correlationId];
+            console.log('msg receieved', JSON.stringify(msg));
+            if(handler) {
+              handler(null, JSON.parse(msg.content.toString()));
+            }
+          }, {noAck: false});
+
+        });
+
+      });
+    });
+
+    // amqp.connect('amqp://localhost')
+    //   .then(conn => {
+    //     self.connection = conn;
+    //     return conn.createChannel();
+    //   })
+    //   .then(ch => {
+    //     self.channel = ch;
+    //   })
+    //   .catch(err => console.log(err));
 
       this.notify = this.notify.bind(this);
       this.request = this.request.bind(this);
   }
   notify(queue, msg, cb) {
     const self = this;
-    self.channel.sendToQueue(queue, new Buffer(JSON.stringify(msg)));
+    this.channel.assertQueue(queue, {durable: true});
+    self.channel.sendToQueue(queue, new Buffer(JSON.stringify(msg)), {persistent: true});
     cb && cb();
+    console.log('Sent One-Way-Message: ', JSON.stringify(msg));
   }
+
   request(queue, msg, cb){
     const id = uuid.v4();
     this.idToCallbackMap[id] = cb;
+    this.channel.assertQueue(queue);
     this.channel.sendToQueue(queue, new Buffer(JSON.stringify(msg)), {
       correlationId: id,  replyTo: this.replyQueue
     });
+    console.log('Sent Request: ', JSON.stringify(msg));
   }
+
+  // not used
   listenForResponses(){
     const self = this;
     this.channel.consume(self.replyQueue, msg => {
@@ -46,6 +78,7 @@ class NotificationService {
       }
     });
   }
+
   handleRequest(handler) {
     const self = this;
     self.channel.consume(self.queue, msg => {
@@ -61,7 +94,7 @@ class NotificationService {
 }
 
 
-module.exports = NotificationService;
+module.exports = RabbitService;
 
 
 

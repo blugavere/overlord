@@ -12,6 +12,18 @@ const notificationService = new NotificationService();
 
 let channel, queue;
 
+let counter = 0;
+const broodlingFactory = {
+  create(data, cb) {
+    counter++;
+    cb(null, {
+      _id: counter,
+      name: data.name,
+      type: 'broodling'
+    });
+  }
+};
+
 const consume = () => {
   channel.consume(queue, e => {
     const msg = JSON.parse(e.content); // buffer
@@ -25,6 +37,22 @@ const consume = () => {
         console.log('Notified sender of new broodlings');
       });
     }, 3000);
+  });
+
+  const rpcQueue = 'broodling_rpc';
+  channel.assertQueue(rpcQueue, {durable: true});
+  channel.consume(rpcQueue, msg => {
+    const content = JSON.parse(msg.content.toString());
+    broodlingFactory.create(content, (err, broodling) => { 
+      if(err) {
+        return console.error(err);
+      }
+      console.log('Props: ', msg.properties);
+      channel.sendToQueue(msg.properties.replyTo, new Buffer(JSON.stringify(broodling)), {
+        correlationId: msg.properties.correlationId
+      });
+      channel.ack(msg);
+    });
   });
 };
 
