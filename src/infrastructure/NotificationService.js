@@ -2,7 +2,7 @@
 
 const assert = require('assert');
 const amqp = require('amqplib/callback_api');
-const uuid = require('node-uuid');
+const uuid = require('uuid');
 
 class RabbitService {
   static get inject() {
